@@ -16,12 +16,12 @@ import model.Pet;
 @Table(name = "dono")
 public class Dono extends Pessoa{
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "pet_dono",
-            joinColumns = @JoinColumn (name = "dono_cpf"),
-            inverseJoinColumns = @JoinColumn (name = "pet_id")
-    )
+//    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "pet_dono",
+//            joinColumns = @JoinColumn (name = "dono_cpf"),
+//            inverseJoinColumns = @JoinColumn (name = "pet_id")
+//    )
     @Column (nullable = false)
     private String estado;
 
