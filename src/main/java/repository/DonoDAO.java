@@ -11,8 +11,8 @@ public class DonoDAO {
     private EntityManagerFactory emf;
 
     public DonoDAO() {
-        // Usando a unidade de persistência "h2" que foi configurada no persistence.xml
-        emf = Persistence.createEntityManagerFactory("h2");
+        // Usando a unidade de persistência "Testes" que foi configurada no persistence.xml
+        emf = Persistence.createEntityManagerFactory("Testes");
     }
 
     private EntityManager getEntityManager() {
@@ -36,6 +36,7 @@ public class DonoDAO {
     public Dono findByCpf(String cpf) {
         EntityManager em = getEntityManager();
         try {
+            // Certifique-se de que "cpf" é a chave primária ou utilize uma query personalizada
             return em.find(Dono.class, cpf);
         } finally {
             em.close();
@@ -101,6 +102,12 @@ public class DonoDAO {
             throw e;
         } finally {
             em.close();
+        }
+    }
+
+    public void close() {
+        if (emf != null) {
+            emf.close();
         }
     }
 }

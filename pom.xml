@@ -78,9 +78,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
+                    <useModulePath>false</useModulePath> <!-- Garantir que JUnit 5 funcione corretamente -->
                 </configuration>
             </plugin>
 
