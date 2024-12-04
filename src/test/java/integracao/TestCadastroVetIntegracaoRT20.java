@@ -52,7 +52,7 @@ public class TestCadastroVetIntegracaoRT20 {
 
         String nome = "Thaiane Bento";
         String dataAdmissao = "";
-        String cpf = "12345678900";
+        String cpf = "123.456.789-00";
         Especialidade especialidade = new Especialidade("Animais de pequeno porte");
 
 
@@ -94,7 +94,7 @@ public class TestCadastroVetIntegracaoRT20 {
 
         String nome = "Nicoli Zimmermann da Silva";
         String dataAdmissao = "22/04/2020";
-        String cpf = "98765432100";
+        String cpf = "987.654.321-00";
         Especialidade especialidade = new Especialidade("Animais de grande porte");
 
         Veterinario veterinario1 = new Veterinario(nome, 30, cpf, dataAdmissao, especialidade);
@@ -109,6 +109,5 @@ public class TestCadastroVetIntegracaoRT20 {
         assertNotNull(veterinarioCadastrado);
         assertEquals(nome, veterinarioCadastrado.getNome(), "O nome do veterinário no banco deveria ser o mesmo do primeiro cadastro.");
     }
-
 
 }
