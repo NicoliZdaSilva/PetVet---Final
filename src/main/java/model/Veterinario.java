@@ -9,14 +9,15 @@ import java.util.HashSet;
 import java.util.Set;
 
     @Entity
+    @Table(name = "veterinarios")
     public class Veterinario extends Pessoa {
 
         @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-//        @JoinTable(
-//                name = "veterinario_especialidade",
-//                joinColumns = @JoinColumn(name = "veterinario_cpf"),
-//                inverseJoinColumns = @JoinColumn(name = "especialidade_id")
-//        )
+        @JoinTable(
+                name = "veterinario_especialidades",
+                joinColumns = @JoinColumn(name = "veterinario_cpf"),
+                inverseJoinColumns = @JoinColumn(name = "especialidade_id")
+        )
         private Set<Especialidade> especialidades = new HashSet<>();
 
         @Column(name = "data_admissao", nullable = false)
@@ -43,7 +44,7 @@ import java.util.Set;
             }
             this.especialidades.add(esp);
         }
-        
+
         public LocalDate getDataAdmissao() {
             return dataAdmissao;
         }
