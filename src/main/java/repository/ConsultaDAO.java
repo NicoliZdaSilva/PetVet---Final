@@ -12,7 +12,7 @@ public class ConsultaDAO {
     private EntityManagerFactory emf;
 
     public ConsultaDAO() {
-        emf = Persistence.createEntityManagerFactory("Testes");
+        emf = Persistence.createEntityManagerFactory("testes");
     }
 
     private EntityManager getEntityManager() {

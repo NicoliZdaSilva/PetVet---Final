@@ -11,7 +11,7 @@ public class PessoaDAO {
     private EntityManagerFactory emf;
 
     public PessoaDAO() {
-        emf = Persistence.createEntityManagerFactory("Testes");
+        emf = Persistence.createEntityManagerFactory("testes");
     }
 
     private EntityManager getEntityManager() {

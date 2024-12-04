@@ -14,7 +14,7 @@ public class PetDAO {
     private EntityManagerFactory emf;
 
     public PetDAO() {
-        emf = Persistence.createEntityManagerFactory("Testes");
+        emf = Persistence.createEntityManagerFactory("testes");
     }
 
     private EntityManager getEntityManager() {
