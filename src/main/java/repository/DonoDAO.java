@@ -11,7 +11,8 @@ public class DonoDAO {
     private EntityManagerFactory emf;
 
     public DonoDAO() {
-        emf = Persistence.createEntityManagerFactory("Testes");
+        // Usando a unidade de persistência "h2" que foi configurada no persistence.xml
+        emf = Persistence.createEntityManagerFactory("h2");
     }
 
     private EntityManager getEntityManager() {

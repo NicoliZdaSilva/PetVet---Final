@@ -2,6 +2,7 @@ package repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 import model.Dono;
 import model.Pet;
@@ -94,6 +95,20 @@ public class PetDAO {
         } catch (Exception e) {
             em.getTransaction().rollback();
             throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    // Novo método para buscar pet pelo nome
+    public Pet findByName(String nome) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery("SELECT p FROM Pet p WHERE p.nome = :nome", Pet.class)
+                    .setParameter("nome", nome)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Caso não encontre nenhum pet com o nome especificado.
         } finally {
             em.close();
         }
