@@ -1,5 +1,6 @@
 package controller;
 
+import model.Especialidade;
 import model.Veterinario;
 import repository.VeterinarioDAO;
 import service.CadastrarVetService;
@@ -25,4 +26,5 @@ public class VeterinarioController {
             return false;
         }
     }
+
 }

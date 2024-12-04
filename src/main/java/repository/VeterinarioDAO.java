@@ -2,7 +2,11 @@ package repository;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Persistence;
+import model.Especialidade;
 import model.Veterinario;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class VeterinarioDAO {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("testes");
@@ -11,6 +15,18 @@ public class VeterinarioDAO {
     public boolean save(Veterinario veterinario) {
         try {
             em.getTransaction().begin();
+
+            Set<Especialidade> especialidadesGerenciadas = new HashSet<>();
+            EspecialidadeDAO especialidadeDAO = new EspecialidadeDAO();
+
+            for (Especialidade esp : veterinario.getEspecialidades()) {
+                Especialidade gerenciada = especialidadeDAO.getOrCreateEspecialidade(esp.getNome(), em);
+                especialidadesGerenciadas.add(gerenciada);
+            }
+
+            veterinario.setEspecialidades(especialidadesGerenciadas);
+
+
             em.persist(veterinario);
             em.getTransaction().commit();
             return true;
@@ -37,6 +53,7 @@ public class VeterinarioDAO {
             em.close();
         }
     }
+
 }
 
 

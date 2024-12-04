@@ -26,8 +26,10 @@ public class Especialidade {
         if (nome == null || nome.isEmpty()) {
             throw new IllegalArgumentException("O nome da especialidade não pode ser nulo ou vazio.");
         }
+
         this.nome = nome;
     }
+
 
     public Long getId() {
         return id;

@@ -1,5 +1,6 @@
 package integracao; //Thaiane
 
+import controller.EspecialidadeController;
 import controller.VeterinarioController;
 import model.Especialidade;
 import model.Veterinario;
@@ -18,31 +19,34 @@ public class TestCadastroVetIntegracaoRT20 {
     @Test // CT52
     public void testCadastroVeterinarioPersistencia() {
         VeterinarioController controller = new VeterinarioController();
-
         String nome = "Nicoli Zimmermann da Silva";
         int idade = 30;
-        String cpf = "987.654.321-00";
+        String cpf = "987.654.321-30";
         String dataAdmissao = "22/04/2020";
+
         Especialidade especialidade = new Especialidade("Animais de grande porte");
-
-
         Veterinario veterinario = new Veterinario(nome, idade, cpf, dataAdmissao, especialidade);
+
+
         boolean cadastroEfetuado = controller.cadastrarVeterinario(veterinario);
 
-        assertTrue(cadastroEfetuado, String.valueOf(true));
+        assertTrue(cadastroEfetuado, "O veterinário deveria ser cadastrado com sucesso.");
 
         Veterinario veterinarioSalvo = controller.readByCPF(cpf);
-        assertNotNull(veterinarioSalvo);
-        assertEquals(nome, veterinarioSalvo.getNome());
-        assertEquals(idade, veterinarioSalvo.getIdade());
-        assertEquals(cpf, veterinarioSalvo.getCpf());
-        assertEquals(dataAdmissao, veterinarioSalvo.getDataAdmissao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        assertNotNull(veterinarioSalvo, "O veterinário deveria estar persistido no banco.");
+        assertEquals(nome, veterinarioSalvo.getNome(), "O nome do veterinário não corresponde.");
+        assertEquals(idade, veterinarioSalvo.getIdade(), "A idade do veterinário não corresponde.");
+        assertEquals(cpf, veterinarioSalvo.getCpf(), "O CPF do veterinário não corresponde.");
+        assertEquals(dataAdmissao, veterinarioSalvo.getDataAdmissao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                "A data de admissão não corresponde.");
 
         Set<String> especialidadesCadastradas = veterinarioSalvo.getEspecialidades()
                 .stream()
                 .map(Especialidade::getNome)
                 .collect(Collectors.toSet());
-        assertTrue(especialidadesCadastradas.contains("Animais de grande porte"));
+
+        assertTrue(especialidadesCadastradas.contains("Animais de grande porte"),
+                "A especialidade do veterinário não corresponde.");
     }
 
     @Test // CT53
