@@ -29,16 +29,18 @@ public class TetsCadastroDonoIntegraçãoRT14 { //RT14
     @Test
     public void testeCadastroTelefoneErrado() {
         DonoDAO dao = new DonoDAO();
-        Dono donoComTelefoneErrado = new Dono("Nicoli da Silva", 19, "55644877957", "SC", "Ibirama", "479885554477"); // Telefone com 12 dígitos
 
-        // Espera-se que uma exceção seja lançada devido ao telefone inválido
+        Dono donoComTelefoneErrado = new Dono("Nicoli da Silva", 19, "47556448779575", "SC", "Ibirama", "479885554477"); // Telefone com 12 dígitos
+
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             dao.salvarDono(donoComTelefoneErrado);
         });
 
-        // Verifica se a exceção possui a mensagem correta
-        assertEquals(" O telefone precisa ter 11 dígitos, incluindo o DDD.", exception.getMessage());
+        assertEquals("O telefone precisa ter 11 dígitos, incluindo o DDD.", exception.getMessage());
     }
+
+
+
     @Test
     public void atualizarDono(){
         DonoDAO dao = new DonoDAO();

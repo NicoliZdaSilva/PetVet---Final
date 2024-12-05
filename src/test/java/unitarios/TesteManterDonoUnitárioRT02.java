@@ -1,8 +1,12 @@
 package unitarios;
 
 import model.Dono;
+import model.Pessoa;
 import unitarios.TesteCadastroDonoUnitárioRT01;
 import org.junit.jupiter.api.Test;
+import repository.DonoDAO;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -73,26 +77,40 @@ public class TesteManterDonoUnitárioRT02 {
         dono2.setTelefone(novoTelefone);
         //assertEquals(novoTelefone, dono2.getTelefone());
     }
-    @Test //CT07
-    public void cadastrarMesmoDono(){
-        String nome = "Maria Antonia";
-        int idade = 25;
-        String cpf = "12256698874";
-        String estado = "São Paulo";
-        String cidade = "São Paulo";
-        String telefone = "47958621665";
 
-        Dono dono3 = new Dono(nome, idade, cpf, estado, cidade, telefone);
 
-        String nome2 = "Maria Antonia";
-        int idade2 = 25;
-        String cpf2 = "12256698874";
-        String estado2 = "São Paulo";
-        String cidade2 = "São Paulo";
-        String telefone2 = "47958621665";
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            Dono dono4 = new Dono(nome2, idade2, cpf2, estado2, cidade2, telefone2);
-        });
-        assertEquals("Este CPF já está cadastrado.", exception.getMessage());
+
+        private DonoDAO donoDAO = new DonoDAO();
+
+        @Test // CT07 - Teste de cadastrar dono com CPF já existente
+        public void cadastrarMesmoDono() {
+            // Dados do primeiro dono
+            String nome = "Maria Antonia";
+            int idade = 25;
+            String cpf = "12256698874";
+            String estado = "São Paulo";
+            String cidade = "São Paulo";
+            String telefone = "47958621665";
+
+            Dono dono1 = new Dono(nome, idade, cpf, estado, cidade, telefone);
+            donoDAO.salvarDono(dono1);  // Salvando o primeiro dono no banco
+
+            // Tentando cadastrar um segundo dono com o mesmo CPF
+            String nome2 = "Maria Antonia";
+            int idade2 = 25;
+            String cpf2 = "12256698874";  // O CPF é o mesmo
+            String estado2 = "São Paulo";
+            String cidade2 = "São Paulo";
+            String telefone2 = "47958621665";
+
+            // Espera-se que lance uma IllegalArgumentException devido ao CPF duplicado
+            IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+                Dono dono2 = new Dono(nome2, idade2, cpf2, estado2, cidade2, telefone2);
+                donoDAO.salvarDono(dono2);  // Tentando salvar o dono com CPF duplicado
+            });
+
+            // Verificando se a exceção foi lançada com a mensagem correta
+            assertEquals("Este CPF já está cadastrado.", exception.getMessage());
+        }
     }
-}
+

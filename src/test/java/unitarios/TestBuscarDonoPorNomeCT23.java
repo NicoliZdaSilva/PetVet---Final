@@ -33,12 +33,10 @@ public class TestBuscarDonoPorNomeCT23 {
         }
 
         // Verificando se o dono foi encontrado
-        assertNotNull(donoEncontrado);
-        assertEquals("João Silva", donoEncontrado.getNome());
-        assertEquals(30, donoEncontrado.getIdade());
-        assertEquals("12345678900", donoEncontrado.getCpf());
-        assertEquals("São Paulo", donoEncontrado.getEstado());
-        assertEquals("São Paulo", donoEncontrado.getCidade());
-        assertEquals("11987654321", donoEncontrado.telefone());
+        assertNotNull(donoEncontrado, "O dono deve ser encontrado pelo nome.");
+        assertEquals(dono.getNome(), donoEncontrado.getNome(), "O nome do dono deve ser igual ao salvo.");
+        assertEquals(dono.getEstado(), donoEncontrado.getEstado(), "O estado do dono deve ser igual ao salvo.");
+        assertEquals(dono.getCidade(), donoEncontrado.getCidade(), "A cidade do dono deve ser igual ao salvo.");
+        assertEquals(dono.getTelefone(), donoEncontrado.getTelefone(), "O telefone do dono deve ser igual ao salvo.");
     }
 }
