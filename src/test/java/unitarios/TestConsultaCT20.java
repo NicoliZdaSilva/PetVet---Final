@@ -6,6 +6,7 @@ import model.Veterinario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import repository.ConsultaDAO;
 
 import java.time.LocalDateTime;
 
@@ -61,4 +62,28 @@ class TestConsultaCT20 {
                 "veterinario=Dr. João Veterinário, pet=Rex, valor=150.0, status='Confirmada', comentario='null'}";
         assertEquals(expected, consulta.toString(), "A representação do toString está incorreta.");
     }
+    @Test
+    void testRemarcarConsulta() {
+        // Nova data e hora para a consulta
+        LocalDateTime novaDataHora = LocalDateTime.of(2024, 12, 6, 14, 00);
+        String novoStatus = "Remarcada";
+
+        // Criar a instância da DAO
+        ConsultaDAO consultaDAO = new ConsultaDAO();
+
+        // Remarcar a consulta
+        consultaDAO.remarcarConsulta(consulta.getId(), novaDataHora, novoStatus);
+
+        // Recuperar a consulta para verificar as alterações
+        Consulta consultaRemarcada = consultaDAO.findById(consulta.getId());
+
+        // Verificar se a data e hora foram atualizadas corretamente
+        assertNotNull(consultaRemarcada.getDataHora());
+        assertEquals(novaDataHora, consultaRemarcada.getDataHora(), "A data e hora não foram atualizadas.");
+
+        // Verificar se o status foi alterado para 'Remarcada'
+        assertEquals(novoStatus, consultaRemarcada.getStatus(), "O status não foi atualizado corretamente.");
+    }
+
 }
+

@@ -26,7 +26,7 @@ public class DonoDAO {
         if (dono == null) {
             throw new IllegalArgumentException("O objeto Dono não pode ser nulo.");
         }
-        if (!dono.getTelefone().matches("\\d{11}")) {
+        if (dono.getTelefone() == null || !dono.getTelefone().matches("\\d{11}")) {
             throw new IllegalArgumentException("O telefone precisa ter 11 dígitos, incluindo o DDD.");
         }
 
@@ -48,8 +48,10 @@ public class DonoDAO {
         }
     }
 
-
     public Dono findByCpf(String cpf) {
+        if (cpf == null || cpf.isEmpty()) {
+            throw new IllegalArgumentException("O CPF não pode ser nulo ou vazio.");
+        }
         EntityManager em = getEntityManager();
         try {
             return em.createQuery("SELECT d FROM Dono d WHERE d.cpf = :cpf", Dono.class)
@@ -73,33 +75,33 @@ public class DonoDAO {
         }
     }
 
+    private Dono findDonoByCpf(String cpf) {
+        return getEntityManager().createQuery("SELECT d FROM Dono d WHERE d.cpf = :cpf", Dono.class)
+                .setParameter("cpf", cpf)
+                .getSingleResult();
+    }
+
     public void updatePorCampo(String cpf, String novoNome, Integer novaIdade, String novoEstado, String novaCidade, String novoTelefone) {
-        if (cpf == null || cpf.isEmpty()) {
-            throw new IllegalArgumentException("O CPF não pode ser nulo ou vazio.");
+        Dono dono = findDonoByCpf(cpf);
+        if (novoNome != null && !novoNome.isEmpty()) {
+            dono.setNome(novoNome);
         }
+        if (novaIdade != null && (novaIdade > 0 && novaIdade < 120)) {
+            dono.setIdade(novaIdade);
+        }
+        if (novoEstado != null && !novoEstado.isEmpty()) {
+            dono.setEstado(novoEstado);
+        }
+        if (novaCidade != null && !novaCidade.isEmpty()) {
+            dono.setCidade(novaCidade);
+        }
+        if (novoTelefone != null && !novoTelefone.isEmpty() && novoTelefone.length() == 11) {
+            dono.setTelefone(novoTelefone);
+        }
+
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            Dono dono = em.createQuery("SELECT d FROM Dono d WHERE d.cpf = :cpf", Dono.class)
-                    .setParameter("cpf", cpf)
-                    .getSingleResult();
-
-            if (novoNome != null && !novoNome.isEmpty()) {
-                dono.setNome(novoNome);
-            }
-            if (novaIdade != null && (novaIdade > 0 && novaIdade < 120)) {
-                dono.setIdade(novaIdade);
-            }
-            if (novoEstado != null && !novoEstado.isEmpty()) {
-                dono.setEstado(novoEstado);
-            }
-            if (novaCidade != null && !novaCidade.isEmpty()) {
-                dono.setCidade(novaCidade);
-            }
-            if (novoTelefone != null && !novoTelefone.isEmpty() && novoTelefone.length() == 11) {
-                dono.setTelefone(novoTelefone);
-            }
-
             em.merge(dono);
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -117,10 +119,7 @@ public class DonoDAO {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            Dono dono = em.createQuery("SELECT d FROM Dono d WHERE d.cpf = :cpf", Dono.class)
-                    .setParameter("cpf", cpf)
-                    .getSingleResult();
-
+            Dono dono = findDonoByCpf(cpf);
             if (dono != null) {
                 em.remove(dono);
             }

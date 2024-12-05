@@ -97,4 +97,34 @@ public class ConsultaDAO {
             em.close();
         }
     }
+    public void remarcarConsulta(Long id, LocalDateTime novaDataHora, String novoStatus) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Consulta consulta = em.find(Consulta.class, id);
+
+            if (consulta == null) {
+                throw new IllegalArgumentException("Consulta com ID " + id + " não encontrada.");
+            }
+
+            // Alterar data e hora da consulta
+            if (novaDataHora != null) {
+                consulta.setDataHora(novaDataHora);
+            }
+
+            // Alterar o status da consulta
+            if (novoStatus != null && !novoStatus.trim().isEmpty()) {
+                consulta.setStatus(novoStatus);
+            }
+
+            em.merge(consulta);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
 }

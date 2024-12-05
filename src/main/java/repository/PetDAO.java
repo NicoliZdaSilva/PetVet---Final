@@ -6,6 +6,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 import model.Dono;
 import model.Pet;
+import model.Pessoa;
 
 import java.util.List;
 
@@ -25,7 +26,15 @@ public class PetDAO {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
+
+            // Usar merge para garantir que o Dono seja salvo ou atualizado
+            if (pet.getDono() != null) {
+                em.merge(pet.getDono()); // Salvar ou atualizar o Dono
+            }
+
+            // Persistir o Pet
             em.persist(pet);
+
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
@@ -34,6 +43,7 @@ public class PetDAO {
             em.close();
         }
     }
+
 
     public Pet findById(Long id) {
         EntityManager em = getEntityManager();
@@ -95,6 +105,21 @@ public class PetDAO {
         } catch (Exception e) {
             em.getTransaction().rollback();
             throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    // Método para buscar pet pelo nome e dono
+    public Pet findByNameAndDono(String nome, Dono dono) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery("SELECT p FROM Pet p WHERE p.nome = :nome AND p.dono = :dono", Pet.class)
+                    .setParameter("nome", nome)
+                    .setParameter("dono", dono)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Caso não encontre nenhum pet com o nome e dono especificados.
         } finally {
             em.close();
         }

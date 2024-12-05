@@ -3,11 +3,10 @@ package unitarios;
 import model.Dono;
 import model.Pet;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import repository.DonoDAO;
+import repository.PetDAO;
 
 public class TestAdicionarPetAoDono {
 
@@ -133,5 +132,24 @@ public class TestAdicionarPetAoDono {
 
         // Mensagem para conferência no terminal
         System.out.println("     - O tipo do pet foi atualizado de '" + tipoOriginal + "' para '" + tipoAtualizado + "'.");
+    }
+    @Test
+    public void adicionarMesmoPet() {
+        Dono dono = new Dono("Nicoli da Silva", 20, "111.222.333-58", "SC", "Ituporanga", "47988556644");
+
+        Pet pet1 = new Pet(LocalDate.of(2018, 8, 5), "Cachorro", "Dandara", dono);
+        Pet pet2 = new Pet(LocalDate.of(2018, 8, 5), "Cachorro", "Dandara", dono);
+
+        PetDAO petDAO = new PetDAO();
+        petDAO.salvarPet(pet1);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            petDAO.salvarPet(pet2);
+        });
+
+        String expectedMessage = "Já existe um pet com o nome " + pet2.getNome() + " para o mesmo dono.";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 }
