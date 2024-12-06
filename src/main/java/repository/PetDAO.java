@@ -44,6 +44,15 @@ public class PetDAO {
         }
     }
 
+    public Pet readById(Long id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Pet.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
 
     public Pet findById(Long id) {
         EntityManager em = getEntityManager();
