@@ -29,7 +29,7 @@ public class TesteManterDonoUnitárioRT02 {
         assertEquals(cpf, dono1.getCpf());
         assertEquals(estado, dono1.getEstado());
         assertEquals(cidade, dono1.getCidade());
-        //assertEquals(telefone, dono1.getTelefone());
+        assertEquals(telefone, dono1.getTelefone());
 
         String novaCidade = "Rio do Sul";
         dono1.setCidade(novaCidade);
@@ -51,7 +51,7 @@ public class TesteManterDonoUnitárioRT02 {
         assertEquals(cpf, dono2.getCpf());
         assertEquals(estado, dono2.getEstado());
         assertEquals(cidade, dono2.getCidade());
-        //assertEquals(telefone, dono2.getTelefone());
+        assertEquals(telefone, dono2.getTelefone());
 
         String novoNome = "Maria Antonia";
         dono2.setNome(novoNome);
@@ -75,7 +75,7 @@ public class TesteManterDonoUnitárioRT02 {
 
         String novoTelefone = "47955998855";
         dono2.setTelefone(novoTelefone);
-        //assertEquals(novoTelefone, dono2.getTelefone());
+        assertEquals(novoTelefone, dono2.getTelefone());
     }
 
 
@@ -95,7 +95,7 @@ public class TesteManterDonoUnitárioRT02 {
             Dono dono1 = new Dono(nome, idade, cpf, estado, cidade, telefone);
             donoDAO.salvarDono(dono1);  // Salvando o primeiro dono no banco
 
-            // Tentando cadastrar um segundo dono com o mesmo CPF
+
             String nome2 = "Maria Antonia";
             int idade2 = 25;
             String cpf2 = "12256698874";  // O CPF é o mesmo
@@ -103,13 +103,11 @@ public class TesteManterDonoUnitárioRT02 {
             String cidade2 = "São Paulo";
             String telefone2 = "47958621665";
 
-            // Espera-se que lance uma IllegalArgumentException devido ao CPF duplicado
             IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
                 Dono dono2 = new Dono(nome2, idade2, cpf2, estado2, cidade2, telefone2);
-                donoDAO.salvarDono(dono2);  // Tentando salvar o dono com CPF duplicado
+                donoDAO.salvarDono(dono2);
             });
 
-            // Verificando se a exceção foi lançada com a mensagem correta
             assertEquals("Este CPF já está cadastrado.", exception.getMessage());
         }
     }

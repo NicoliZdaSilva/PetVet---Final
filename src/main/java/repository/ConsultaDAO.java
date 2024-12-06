@@ -107,12 +107,10 @@ public class ConsultaDAO {
                 throw new IllegalArgumentException("Consulta com ID " + id + " não encontrada.");
             }
 
-            // Alterar data e hora da consulta
             if (novaDataHora != null) {
                 consulta.setDataHora(novaDataHora);
             }
 
-            // Alterar o status da consulta
             if (novoStatus != null && !novoStatus.trim().isEmpty()) {
                 consulta.setStatus(novoStatus);
             }
